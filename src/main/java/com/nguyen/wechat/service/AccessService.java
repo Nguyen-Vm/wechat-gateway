@@ -1,19 +1,17 @@
 package com.nguyen.wechat.service;
 
-import com.alibaba.fastjson.JSON;
 import com.nguyen.wechat.dto.response.TokenResponse;
 import com.nguyen.wechat.mapper.AccessTokenMapper;
 import com.nguyen.wechat.model.AccessToken;
 import com.nguyen.wechat.utils.HttpRestUtils;
 import com.nguyen.wechat.utils.PropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.Call;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -48,25 +46,23 @@ public class AccessService {
     private void refreshAccessToken(){
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             String url = String.format(ACCESS_TOKEN_URL, APPID, SECRET);
-            Call call = HttpRestUtils.buildCall(url, null, RequestMethod.GET, null);
-            try {
-                String rs = call.execute().body().string();
-                TokenResponse tokenResponse = JSON.parseObject(rs, TokenResponse.class);
-                if (StringUtils.isNotBlank(tokenResponse.accessToken)){
-                    AccessToken token = tokenMapper.findByAppId(APPID);
-                    if (token == null){
-                        token = new AccessToken();
-                    }
-                    token.appId = APPID;
-                    token.accessToken = tokenResponse.accessToken;
-                    token.expiresIn = tokenResponse.expiresIn;
-                    tokenMapper.save(token);
-                }else {
-                    log.error("refresh access token error， code: {}, msg: {}", tokenResponse.errcode, tokenResponse.errmsg);
+            TokenResponse tokenResponse = HttpRestUtils.get(url, TokenResponse.class);
+            if (StringUtils.isNotBlank(tokenResponse.accessToken)){
+                AccessToken token = tokenMapper.findByAppId(APPID);
+                if (token == null){
+                    token = new AccessToken();
                 }
-            } catch (IOException e) {
-                log.error("refresh access token error", e);
+                token.appId = APPID;
+                token.accessToken = tokenResponse.accessToken;
+                token.expiresIn = tokenResponse.expiresIn;
+                tokenMapper.save(token);
+            }else {
+                log.error("refresh access token error， code: {}, msg: {}", tokenResponse.errcode, tokenResponse.errmsg);
             }
         }, 1L, REFRESH_TIME, TimeUnit.MILLISECONDS);
+    }
+
+    public void handleMessageEvent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.getWriter().write(StringUtils.EMPTY);
     }
 }

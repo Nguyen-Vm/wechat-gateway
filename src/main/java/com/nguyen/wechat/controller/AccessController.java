@@ -46,4 +46,9 @@ public class AccessController {
             response.getWriter().write(echostr);
         }
     }
+
+    @RequestMapping(value = "/access", method = RequestMethod.POST)
+    public void MessageEventHandle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        accessService.handleMessageEvent(request, response);
+    }
 }
