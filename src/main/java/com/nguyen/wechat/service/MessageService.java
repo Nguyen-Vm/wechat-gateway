@@ -1,5 +1,6 @@
 package com.nguyen.wechat.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -7,6 +8,7 @@ import com.nguyen.wechat.common.IConst;
 import com.nguyen.wechat.dto.request.NewsMessageRequest;
 import com.nguyen.wechat.dto.request.TemplateMessageRequest;
 import com.nguyen.wechat.dto.request.TextMessageRequest;
+import com.nguyen.wechat.dto.response.TemplateResponse;
 import com.nguyen.wechat.mapper.AccessTokenMapper;
 import com.nguyen.wechat.model.AccessToken;
 import com.nguyen.wechat.utils.HttpRestUtils;
@@ -14,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.Headers;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -102,5 +105,16 @@ public class MessageService {
                 log.debug("send template message response: {}", body.string());
             }
         });
+    }
+
+    public List<TemplateResponse> templateList(String appId) {
+        return getTemplateList(getAccessToken(appId));
+    }
+
+    private List<TemplateResponse> getTemplateList(String token) {
+        String url = String.format(IConst.WechatMessageUrl.TemplateList, token);
+        JSONObject json = HttpRestUtils.get(url, JSONObject.class);
+        List<TemplateResponse> trList = JSON.parseArray(json.getString("template_list"), TemplateResponse.class);
+        return CollectionUtils.isEmpty(trList) ? Lists.newArrayList() : trList;
     }
 }

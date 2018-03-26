@@ -10,5 +10,6 @@ public class IConst {
     public interface WechatMessageUrl{
         String CustomMessage = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s";
         String TemplateMessage = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s";
+        String TemplateList = "https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=%s";
     }
 }
