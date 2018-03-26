@@ -1,5 +1,6 @@
 package com.nguyen.wechat.controller;
 
+import com.nguyen.wechat.dto.request.NewsMessageRequest;
 import com.nguyen.wechat.dto.request.TextMessageRequest;
 import com.nguyen.wechat.service.MessageService;
 import io.swagger.annotations.Api;
@@ -28,4 +29,14 @@ public class MessageController {
     public void sendTextMessage(@RequestBody TextMessageRequest request){
         messageService.sendTextMessage(request);
     }
+
+    @ApiOperation("发送图文消息")
+    @RequestMapping(path = "/send/news", method =RequestMethod.POST)
+    public void sendNewsMessage(@RequestBody NewsMessageRequest request){
+        messageService.sendNewsMessage(request);
+    }
+
+
+
+
 }
