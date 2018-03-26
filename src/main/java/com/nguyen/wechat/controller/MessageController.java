@@ -1,6 +1,7 @@
 package com.nguyen.wechat.controller;
 
 import com.nguyen.wechat.dto.request.NewsMessageRequest;
+import com.nguyen.wechat.dto.request.TemplateMessageRequest;
 import com.nguyen.wechat.dto.request.TextMessageRequest;
 import com.nguyen.wechat.service.MessageService;
 import io.swagger.annotations.Api;
@@ -31,9 +32,15 @@ public class MessageController {
     }
 
     @ApiOperation("发送图文消息")
-    @RequestMapping(path = "/send/news", method =RequestMethod.POST)
+    @RequestMapping(path = "/send/news", method = RequestMethod.POST)
     public void sendNewsMessage(@RequestBody NewsMessageRequest request){
         messageService.sendNewsMessage(request);
+    }
+
+    @ApiOperation("发送模板消息")
+    @RequestMapping(path = "/send/template", method = RequestMethod.POST)
+    public void sendTemplateMessage(@RequestBody TemplateMessageRequest request){
+        messageService.sendTemplateMessage(request);
     }
 
 

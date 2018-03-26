@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.nguyen.wechat.common.IConst;
 import com.nguyen.wechat.dto.request.NewsMessageRequest;
+import com.nguyen.wechat.dto.request.TemplateMessageRequest;
 import com.nguyen.wechat.dto.request.TextMessageRequest;
 import com.nguyen.wechat.mapper.AccessTokenMapper;
 import com.nguyen.wechat.model.AccessToken;
@@ -37,6 +38,7 @@ public class MessageService {
         this.tokenMapper = tokenMapper;
     }
 
+    /*获取ACCESS_TOKEN*/
     private String getAccessToken(String appId){
         AccessToken token = tokenMapper.findByAppId(appId);
         if (StringUtils.isBlank(token.accessToken)){
@@ -46,6 +48,7 @@ public class MessageService {
         return token.accessToken;
     }
 
+    /*发送文本消息*/
     public void sendTextMessage(TextMessageRequest request) {
         JSONObject json = new JSONObject();
         json.put("touser", request.openId);
@@ -61,6 +64,7 @@ public class MessageService {
         });
     }
 
+    /*发送图文消息*/
     public void sendNewsMessage(NewsMessageRequest request) {
         JSONObject json = new JSONObject();
         json.put("touser", request.openId);
@@ -79,6 +83,23 @@ public class MessageService {
             @Override
             protected void success(Headers headers, ResponseBody body) throws Exception {
                 log.debug("send news message response: {}", body.string());
+            }
+        });
+    }
+
+    /*发送模板消息*/
+    public void sendTemplateMessage(TemplateMessageRequest request) {
+        JSONObject json = new JSONObject();
+        json.put("touser", request.openId);
+        json.put("template_id", request.templateId);
+        json.put("url", request.redirect);
+        json.put("data", request.keyWordData);
+        RequestBody body = HttpRestUtils.buildBody(MediaType.APPLICATION_JSON_UTF8, json);
+        String url = String.format(IConst.WechatMessageUrl.TemplateMessage, getAccessToken(request.appId));
+        HttpRestUtils.asyncPost(url, body, new HttpRestUtils.OkHttpCallback() {
+            @Override
+            protected void success(Headers headers, ResponseBody body) throws Exception {
+                log.debug("send template message response: {}", body.string());
             }
         });
     }
