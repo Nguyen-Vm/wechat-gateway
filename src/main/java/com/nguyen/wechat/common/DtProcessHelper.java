@@ -10,6 +10,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.InputStream;
@@ -26,7 +27,7 @@ import java.util.Map;
 @Slf4j
 public class DtProcessHelper {
     private static final DocumentBuilderFactory FACTORY = DocumentBuilderFactory.newInstance();
-
+    private static final String OAUTH20 = "oauth/20";
 
     public static JSONObject xml2Json(String xml){
         JSONObject json = new JSONObject();
@@ -65,5 +66,13 @@ public class DtProcessHelper {
         // 释放资源
         inputStream.close();
         return map;
+    }
+
+    public static String httpServer(HttpServletRequest request) {
+        return request.getScheme() + "://" + request.getServerName();
+    }
+
+    public static String oauth20(String server) {
+        return StringUtils.endsWith(server,"/") ? server + OAUTH20 : server + "/" + OAUTH20;
     }
 }

@@ -12,4 +12,8 @@ public class IConst {
         String TemplateMessage = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s";
         String TemplateList = "https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=%s";
     }
+
+    public interface WechatAccessUrl{
+        String AccessUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
+    }
 }

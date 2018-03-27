@@ -1,11 +1,18 @@
 package com.nguyen.wechat.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.nguyen.wechat.common.DtProcessHelper;
+import com.nguyen.wechat.common.IConst;
 import com.nguyen.wechat.service.AccessService;
+import com.nguyen.wechat.utils.HttpRestUtils;
 import com.nguyen.wechat.utils.SignUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,38 +24,50 @@ import java.io.IOException;
  * @description:
  */
 @Controller
-@RequestMapping("/api")
 public class AccessController {
 
     @Autowired
     private AccessService accessService;
 
-    /** 微信授权处理 **/
+    /** 接入微信 **/
     @RequestMapping(value = "/access", method = RequestMethod.GET)
     public void accessWechat(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //signature	微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
-        //timestamp	时间戳
-        //nonce	    随机数
-        //echostr	随机字符串
         String signature = request.getParameter("signature");
         String timestamp = request.getParameter("timestamp");
         String nonce = request.getParameter("nonce");
         String echostr = request.getParameter("echostr");
-        /*
-        * 开发者通过检验signature对请求进行校验（下面有校验方式）。
-        * 若确认此次GET请求来自微信服务器，请原样返回echostr参数内容，则接入生效，成为开发者成功，否则接入失败。
-        * 加密/校验流程如下：
-        * 1）将token、timestamp、nonce三个参数进行字典序排序；
-        * 2）将三个参数字符串拼接成一个字符串进行sha1加密；
-        * 3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信。
-        * */
         if (SignUtils.checkSignature(signature, timestamp, nonce)){
             response.getWriter().write(echostr);
         }
     }
 
+    /** 微信消息事件处理 **/
     @RequestMapping(value = "/access", method = RequestMethod.POST)
     public void MessageEventHandle(HttpServletRequest request, HttpServletResponse response) throws Exception {
         accessService.handleMessageEvent(request, response);
+    }
+
+    /** 微信网页授权 **/
+    @RequestMapping(value = "/entrance", method = {RequestMethod.GET, RequestMethod.POST})
+    public String entrance(@RequestParam String appId,
+                           @RequestParam(required = false) String state,
+                           HttpServletRequest request,
+                           Model model) throws Exception {
+        model.addAllAttributes(accessService.entrance(appId, state, DtProcessHelper.httpServer(request)));
+        return "entrance";
+    }
+
+    //http://rwming.free.ngrok.cc/oauth/20
+    /** 微信授权回调 **/
+    @RequestMapping(value = "/oauth/20", method = {RequestMethod.GET, RequestMethod.POST})
+    public String oauth2(@RequestParam String code,
+                         @RequestParam String state,
+                         HttpServletRequest request,
+                         Model model){
+        JSONObject rs = HttpRestUtils.post(String.format(IConst.WechatAccessUrl.AccessUrl, "wx09a57365be7f2c53", "ff47a858e08e639c5a659e2c41f444fd", code), JSONObject.class);
+        if (StringUtils.isBlank(rs.getString("access_token"))){
+            return "failed";
+        }
+        return "success";
     }
 }

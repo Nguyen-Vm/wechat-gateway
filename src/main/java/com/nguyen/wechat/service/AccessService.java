@@ -1,5 +1,7 @@
 package com.nguyen.wechat.service;
 
+import com.google.common.collect.ImmutableMap;
+import com.nguyen.wechat.common.DtProcessHelper;
 import com.nguyen.wechat.dto.response.TokenResponse;
 import com.nguyen.wechat.mapper.AccessTokenMapper;
 import com.nguyen.wechat.model.AccessToken;
@@ -12,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -65,4 +70,11 @@ public class AccessService {
     public void handleMessageEvent(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.getWriter().write(StringUtils.EMPTY);
     }
+
+    public Map<String, String> entrance(String appId, String state, String server) throws UnsupportedEncodingException {
+        return ImmutableMap.of("appId", appId,
+                "oauth2", URLEncoder.encode(DtProcessHelper.oauth20(server), "UTF-8"),
+                "state", state);
+    }
+
 }
