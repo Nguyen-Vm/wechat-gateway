@@ -57,7 +57,6 @@ public class AccessController {
         return "entrance";
     }
 
-    //http://rwming.free.ngrok.cc/oauth/20
     /** 微信授权回调 **/
     @RequestMapping(value = "/oauth/20", method = {RequestMethod.GET, RequestMethod.POST})
     public String oauth2(@RequestParam String code,
