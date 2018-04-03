@@ -6,7 +6,7 @@
 </head>
 <body>
 <script type="text/javascript">
-    window.location.replace("https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${oauth2}&response_type=code&scope=snsapi_base&state=${state}#wechat_redirect");
+    window.location.replace("https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${oauth2}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect");
 </script>
 </body>
 </html>

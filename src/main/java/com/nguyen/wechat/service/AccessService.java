@@ -2,15 +2,23 @@ package com.nguyen.wechat.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.nguyen.wechat.common.DtProcessHelper;
+import com.nguyen.wechat.common.IConst;
+import com.nguyen.wechat.dto.response.OAuthToken;
 import com.nguyen.wechat.dto.response.TokenResponse;
+import com.nguyen.wechat.dto.response.UserInfoResponse;
 import com.nguyen.wechat.mapper.AccessTokenMapper;
+import com.nguyen.wechat.mapper.AppAuthTokenMapper;
+import com.nguyen.wechat.mapper.AppUserInfoMapper;
 import com.nguyen.wechat.model.AccessToken;
+import com.nguyen.wechat.model.AppAuthToken;
+import com.nguyen.wechat.model.AppUserInfo;
 import com.nguyen.wechat.utils.HttpRestUtils;
 import com.nguyen.wechat.utils.PropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,10 +46,16 @@ public class AccessService {
     private static final String SECRET = PropertiesUtil.getProperty("appsecret");
 
     private final AccessTokenMapper tokenMapper;
+    private final AppAuthTokenMapper appAuthTokenMapper;
+    private final AppUserInfoMapper appUserInfoMapper;
 
     @Autowired
-    public AccessService(AccessTokenMapper tokenMapper) {
+    public AccessService(AccessTokenMapper tokenMapper,
+                         AppAuthTokenMapper appAuthTokenMapper,
+                         AppUserInfoMapper appUserInfoMapper) {
         this.tokenMapper = tokenMapper;
+        this.appAuthTokenMapper = appAuthTokenMapper;
+        this.appUserInfoMapper = appUserInfoMapper;
     }
 
     public void starting(){
@@ -77,4 +91,23 @@ public class AccessService {
                 "state", state);
     }
 
+    public String callback(String code, Model model) {
+        OAuthToken oAuthToken = HttpRestUtils.post(String.format(IConst.WechatAccessUrl.AccessUrl, APPID, SECRET, code), OAuthToken.class);
+        if (StringUtils.isNotBlank(oAuthToken.openId)) {
+            AppAuthToken authToken = appAuthTokenMapper.findByOpenId(oAuthToken.openId);
+            if (authToken != null) {
+                appAuthTokenMapper.delete(authToken);
+            }
+            authToken = appAuthTokenMapper.save(AppAuthToken.model(oAuthToken));
+            UserInfoResponse userInfoResponse = HttpRestUtils.get(String.format(IConst.WechatAccessUrl.userInfoUrl, authToken.accessToken, authToken.openId), UserInfoResponse.class);
+            AppUserInfo appUserInfo = appUserInfoMapper.findByOpenId(userInfoResponse.openId);
+            if (appUserInfo != null) {
+                appUserInfoMapper.delete(appUserInfo);
+            }
+            appUserInfo = appUserInfoMapper.save(AppUserInfo.model(userInfoResponse));
+            model.addAttribute("nickname", appUserInfo.nickname);
+            return "success";
+        }
+        return "failed";
+    }
 }
