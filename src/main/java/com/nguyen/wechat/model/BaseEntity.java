@@ -22,10 +22,10 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @MappedSuperclass
-@EntityListeners({EntityModel.DateEntityListener.class})
+@EntityListeners({BaseEntity.DateEntityListener.class})
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class EntityModel implements Serializable{
-    private static final long serialVersionUID = -5244614184696053278L;
+public abstract class BaseEntity implements Serializable{
+    private static final long serialVersionUID = 7191312967943387849L;
 
     /** 主键ID **/
     @Id
@@ -36,23 +36,23 @@ public abstract class EntityModel implements Serializable{
 
     /** 创建时间 **/
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "create_time", length = 7)
+    @Column(name = "create_time")
     public Date createTime;
 
     /** 更新时间 **/
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modify_time", length = 7)
-    public Date modifyTime;
+    @Column(name = "update_time")
+    public Date updateTime;
 
 
     public static class DateEntityListener {
         /** 当持久化对象更新时，在更新前就会执行这个函数，用于自动更新修改日期字段 */
         @PreUpdate
         public void onPreUpdate(Object o) {
-            if (o instanceof EntityModel) {
+            if (o instanceof BaseEntity) {
                 Date now = DateUtils.now();
-                EntityModel em = (EntityModel) o;
-                em.modifyTime = now;
+                BaseEntity em = (BaseEntity) o;
+                em.updateTime = now;
                 if(null == em.createTime) {
                     em.createTime = now;
                 }
@@ -62,10 +62,10 @@ public abstract class EntityModel implements Serializable{
         /** 当保存一个entity对象时，在保存之前会执行这个函数，用于自动添加创建日期 */
         @PrePersist
         public void onPrePersist(Object o) {
-            if (o instanceof EntityModel) {
+            if (o instanceof BaseEntity) {
                 Date currentDate = DateUtils.now();
-                ((EntityModel) o).createTime = currentDate;
-                ((EntityModel) o).modifyTime = currentDate;
+                ((BaseEntity) o).createTime = currentDate;
+                ((BaseEntity) o).updateTime = currentDate;
             }
         }
     }

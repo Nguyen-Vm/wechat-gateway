@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_access_token")
-public class AccessToken extends EntityModel {
+public class AccessToken extends BaseEntity {
 
     /** 授权的AppId **/
     @Column(name = "app_id", length = 100, unique = true)

@@ -22,7 +22,7 @@ import java.io.StringReader;
  *
  * 提供提取消息格式中的密文及生成回复消息格式的接口.
  */
-class XMLParse {
+public class XMLParse {
 
 	/**
 	 * 提取出xml数据包中的加密消息

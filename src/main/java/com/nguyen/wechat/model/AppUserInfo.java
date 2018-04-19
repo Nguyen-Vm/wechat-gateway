@@ -14,7 +14,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "t_app_user_info")
-public class AppUserInfo extends EntityModel {
+public class AppUserInfo extends BaseEntity {
 
     @Column(name = "open_id", unique = true)
     public String openId;
