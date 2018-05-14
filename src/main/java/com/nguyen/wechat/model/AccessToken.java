@@ -7,18 +7,18 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_access_token")
-public class AccessToken extends BaseEntity {
+public class AccessToken extends EntityModel {
 
     /** 授权的AppId **/
     @Column(name = "app_id", length = 100, unique = true)
     public String appId;
 
     /** 授权ACCESS_TOKEN **/
-    @Column(name = "accessToken", length = 512)
+    @Column(name = "access_token", length = 512)
     public String accessToken;
 
     /** TOKEN过期时间 **/
-    @Column(name = "expiresIn")
+    @Column(name = "expires_in")
     public Long expiresIn;
 
 }

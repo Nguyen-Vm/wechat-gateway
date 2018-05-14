@@ -22,9 +22,9 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @MappedSuperclass
-@EntityListeners({BaseEntity.DateEntityListener.class})
+@EntityListeners({EntityModel.DateEntityListener.class})
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class BaseEntity implements Serializable{
+public abstract class EntityModel implements Serializable{
     private static final long serialVersionUID = 7191312967943387849L;
 
     /** 主键ID **/
@@ -49,9 +49,9 @@ public abstract class BaseEntity implements Serializable{
         /** 当持久化对象更新时，在更新前就会执行这个函数，用于自动更新修改日期字段 */
         @PreUpdate
         public void onPreUpdate(Object o) {
-            if (o instanceof BaseEntity) {
+            if (o instanceof EntityModel) {
                 Date now = DateUtils.now();
-                BaseEntity em = (BaseEntity) o;
+                EntityModel em = (EntityModel) o;
                 em.updateTime = now;
                 if(null == em.createTime) {
                     em.createTime = now;
@@ -62,10 +62,10 @@ public abstract class BaseEntity implements Serializable{
         /** 当保存一个entity对象时，在保存之前会执行这个函数，用于自动添加创建日期 */
         @PrePersist
         public void onPrePersist(Object o) {
-            if (o instanceof BaseEntity) {
+            if (o instanceof EntityModel) {
                 Date currentDate = DateUtils.now();
-                ((BaseEntity) o).createTime = currentDate;
-                ((BaseEntity) o).updateTime = currentDate;
+                ((EntityModel) o).createTime = currentDate;
+                ((EntityModel) o).updateTime = currentDate;
             }
         }
     }

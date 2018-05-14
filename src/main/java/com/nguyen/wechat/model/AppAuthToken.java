@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "t_app_auth_token")
-public class AppAuthToken extends BaseEntity {
+public class AppAuthToken extends EntityModel {
 
     @Column(name = "app_id")
     public String appId;
