@@ -34,7 +34,7 @@ public class JdbcTemplateTest {
         log.info("app_id: " + accessToken.appId + ", access_token: " + accessToken.accessToken);
     }
 
-    static class AccessTokenMapper implements RowMapper<AccessToken> {
+    private static final class AccessTokenMapper implements RowMapper<AccessToken> {
 
         @Override
         public AccessToken mapRow(ResultSet resultSet, int i) throws SQLException {
