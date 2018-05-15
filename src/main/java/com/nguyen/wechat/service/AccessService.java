@@ -13,15 +13,19 @@ import com.nguyen.wechat.model.AccessToken;
 import com.nguyen.wechat.model.AppAuthToken;
 import com.nguyen.wechat.model.AppUserInfo;
 import com.nguyen.wechat.utils.HttpRestUtils;
+import com.nguyen.wechat.utils.MessageUtils;
 import com.nguyen.wechat.utils.PropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.nguyen.foun.utils.ByteUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -82,7 +86,16 @@ public class AccessService {
     }
 
     public void handleMessageEvent(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        response.getWriter().write(StringUtils.EMPTY);
+        Map<String, String> map = MessageUtils.parseXml(request);
+        String openId = map.get("FromUserName");
+        String appId = map.get("ToUserName");
+        if (map.get("MsgType").equals("text") && map.get("Content").equals("若初医助")) {
+            // todo:
+        }
+        /*InputStream is = request.getInputStream();
+        String message = ByteUtils.string(is);
+        System.out.println(message);
+        response.getWriter().write(StringUtils.EMPTY);*/
     }
 
     public Map<String, String> entrance(String appId, String state, String server) throws UnsupportedEncodingException {
