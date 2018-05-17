@@ -71,7 +71,7 @@ public class AccessService {
             String url = String.format(ACCESS_TOKEN_URL, APPID, SECRET);
             TokenResponse tokenResponse = HttpRestUtils.get(url, TokenResponse.class);
             if (StringUtils.isNotBlank(tokenResponse.accessToken)){
-                AccessToken token = tokenMapper.findByAppId(APPID);
+                AccessToken token = tokenMapper.selectByAppId(APPID);
                 if (token == null){
                     token = new AccessToken();
                 }

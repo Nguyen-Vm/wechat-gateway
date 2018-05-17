@@ -43,7 +43,7 @@ public class MessageService {
 
     /*获取ACCESS_TOKEN*/
     private String getAccessToken(String appId){
-        AccessToken token = tokenMapper.findByAppId(appId);
+        AccessToken token = tokenMapper.selectByAppId(appId);
         if (StringUtils.isBlank(token.accessToken)){
             log.error("can not find valid access token, appId: {}", appId);
             throw new RuntimeException("没有找到有效的token");
