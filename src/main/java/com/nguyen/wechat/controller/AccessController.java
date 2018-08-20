@@ -26,7 +26,7 @@ public class AccessController {
     private AccessService accessService;
 
     /** 接入微信 **/
-    @RequestMapping(value = "/access", method = RequestMethod.GET)
+    @RequestMapping(value = "/event", method = RequestMethod.GET)
     public void accessWechat(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String signature = request.getParameter("signature");
         String timestamp = request.getParameter("timestamp");
@@ -38,7 +38,7 @@ public class AccessController {
     }
 
     /** 微信消息事件处理 **/
-    @RequestMapping(value = "/access", method = RequestMethod.POST)
+    @RequestMapping(value = "/event", method = RequestMethod.POST)
     public void MessageEventHandle(HttpServletRequest request, HttpServletResponse response) throws Exception {
         accessService.handleMessageEvent(request, response);
     }

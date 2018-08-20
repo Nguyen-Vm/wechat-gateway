@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class SignUtils {
     // 与接口配置信息中的Token要一致
-    private static String token = "wechat-gateway";
+    private static String token = "wechat";
 
 
     /*
