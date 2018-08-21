@@ -1,9 +1,9 @@
 package com.nguyen.wechat.model;
 
-import com.nguyen.wechat.utils.DateUtils;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.linker.foundation.utils.DateUtils;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;

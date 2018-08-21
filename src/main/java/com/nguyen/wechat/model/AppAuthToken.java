@@ -2,7 +2,7 @@ package com.nguyen.wechat.model;
 
 import com.nguyen.wechat.common.IConst;
 import com.nguyen.wechat.dto.response.OAuthToken;
-import com.nguyen.wechat.utils.BeanUtils;
+import org.linker.foundation.utils.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

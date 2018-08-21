@@ -1,8 +1,8 @@
 package com.nguyen.wechat;
 
 import com.nguyen.wechat.service.AccessService;
-import com.nguyen.wechat.utils.SpringBeanHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.linker.foundation.helper.SpringBeanHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
