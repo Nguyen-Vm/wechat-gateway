@@ -20,4 +20,7 @@ public class IConst {
         String AccessUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
         String userInfoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN";
     }
+
+    public static final String GET_ACCESS_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
+    public static final String CREATE_WECHAT_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s";
 }

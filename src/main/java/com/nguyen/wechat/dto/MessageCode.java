@@ -1,5 +1,7 @@
 package com.nguyen.wechat.dto;
 
+import org.linker.foundation.dto.exception.IMessageCode;
+
 /**
  * @author RWM
  * @date 2018/3/20
@@ -15,6 +17,12 @@ public enum MessageCode implements IMessageCode {
     EncryptAESError("-40006", "aes加密失败"),
     DecryptAESError("-40007", "aes解密失败"),
     IllegalBuffer("-40008", "解密后得到的buffer非法"),
+    AppIdNotNull("", ""),
+    AppSecretNotNull("", ""),
+    MainManuOversize("", ""),
+    SubManuOversize("", ""),
+    GetAccessTokenError("", ""),
+    CreateWechatMenuError("", "")
     ;
 
     private final String code;

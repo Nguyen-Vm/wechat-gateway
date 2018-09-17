@@ -5,7 +5,6 @@ import com.nguyen.wechat.crypt.ByteGroup;
 import com.nguyen.wechat.crypt.PKCS7Encoder;
 import com.nguyen.wechat.crypt.SHA1;
 import com.nguyen.wechat.crypt.XMLParse;
-import com.nguyen.wechat.dto.AppException;
 import com.nguyen.wechat.dto.MessageCode;
 import org.apache.commons.codec.binary.Base64;
 
