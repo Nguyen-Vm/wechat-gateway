@@ -1,0 +1,57 @@
+{
+    "appId": "wxe67e6f0523af0c4b", 
+    "appSecret": "cf652d7feeb008486f0d88bd79d3a6ed", 
+    "wechatMenuList": [
+        {
+            "key": "123", 
+            "name": "一级-左", 
+            "subMenus": [
+                {
+                    "key": "123", 
+                    "name": "二级-click", 
+                    "subMenus": [ ], 
+                    "type": "click", 
+                    "url": "http://www.baidu.com"
+                }, 
+                {
+                    "key": "123", 
+                    "name": "二级-view", 
+                    "subMenus": [ ], 
+                    "type": "view", 
+                    "url": "http://www.baidu.com"
+                }
+            ], 
+            "type": "click", 
+            "url": "http://www.baidu.com"
+        }, 
+        {
+            "key": "123", 
+            "name": "一级-中", 
+            "subMenus": [
+                {
+                    "key": "123", 
+                    "name": "二级-click", 
+                    "subMenus": [ ], 
+                    "type": "click", 
+                    "url": "http://www.baidu.com"
+                }, 
+                {
+                    "key": "123", 
+                    "name": "二级-view", 
+                    "subMenus": [ ], 
+                    "type": "view", 
+                    "url": "http://www.baidu.com"
+                }
+            ], 
+            "type": "view", 
+            "url": "http://www.baidu.com"
+        }, 
+        {
+            "key": "123", 
+            "name": "一级-右", 
+            "subMenus": [ ], 
+            "type": "view", 
+            "url": "https://y.qq.com/"
+        }
+    ]
+}
