@@ -44,7 +44,7 @@ public class AppUserInfo extends EntityModel {
     public String unionId;
 
     public static AppUserInfo model(UserInfoResponse userInfoResponse) {
-        AppUserInfo model = BeanUtils.map(userInfoResponse, AppUserInfo.class);
+        AppUserInfo model = BeanUtils.castTo(userInfoResponse, AppUserInfo.class);
         return model;
     }
 }

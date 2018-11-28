@@ -7,6 +7,7 @@ import com.nguyen.wechat.crypt.SHA1;
 import com.nguyen.wechat.crypt.XMLParse;
 import com.nguyen.wechat.dto.MessageCode;
 import org.apache.commons.codec.binary.Base64;
+import org.linker.foundation.dto.exception.AppException;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;

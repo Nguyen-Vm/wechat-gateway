@@ -36,7 +36,7 @@ public class AppAuthToken extends EntityModel {
     public String scope;
 
     public static AppAuthToken model(OAuthToken oAuthToken) {
-        AppAuthToken model = BeanUtils.map(oAuthToken, AppAuthToken.class);
+        AppAuthToken model = BeanUtils.castTo(oAuthToken, AppAuthToken.class);
         model.appId = IConst.APPID;
         return model;
     }
